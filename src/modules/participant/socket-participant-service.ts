@@ -1,8 +1,7 @@
 import {
   OnGatewayConnection,
-  OnGatewayDisconnect,
   WebSocketGateway,
-  WebSocketServer, WsException
+  WebSocketServer
 } from "@nestjs/websockets";
 
 import { Server, Socket } from "socket.io";
@@ -26,17 +25,27 @@ export class SocketParticipantService implements OnGatewayConnection {
   @WebSocketServer()
   server: Server;
 
-  questionEvent(data: any) {
-
+  authenticationParticipant(data: { participantIds: string }) {
+    for (const [client, participantId] of this.clients) {
+      if (participantId === data.participantIds) {
+        client.emit("auth", { isApprove: true });
+      }
+    }
   }
 
-  authenticationParticipant(data: any) {
-    console.log(data);
+  sendStatusQuiz(data: { quizId: string, status: boolean }) {
+    console.log(data.quizId);
+    const status = !data.status
+    this.server.to(`room_${data.quizId}`).emit("quiz-management", {
+      type: "QUIZ-STATUS",
+      payload: { status: status }
+    });
   }
 
   async handleConnection(client: Socket) {
     const roomKey = client.handshake.headers.roomkey as string;
     const participantId = client.handshake.headers.participantid as string;
+
 
     this.clients.set(client, participantId);
     client.join(`room_${roomKey}`);

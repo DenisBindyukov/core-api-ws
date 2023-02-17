@@ -42,25 +42,16 @@ export class SocketAdminService implements OnGatewayConnection, OnGatewayDisconn
   handleEvent(@MessageBody() dto: Data, @ConnectedSocket() client: Socket) {
     console.log("handleEvent: ", dto);
     const events = "someEvents";
-
     // this.server.to("123").emit("test", {});
-    client.emit("admin-path", { events, dto });
+    client.emit("test", { events, dto });
     // return { events, text };
-  }
-
-  sendStatusQuiz(data: { keyRoom: string, status: boolean }) {
-    this.server.to(`room_${data.keyRoom}`).emit("public-event", {
-      type: "QUIZ-STATUS",
-      payload: { status: data.status }
-    });
   }
 
   async handleConnection(client: Socket) {
     const token = client.handshake.headers.token as string;
-    const roomKey = client.handshake.headers.token as string;
-    console.log("admin: ", roomKey);
+    const roomKey = client.handshake.headers.roomkey as string;
+
     if (!token) {
-      console.log("render");
       console.log(token);
       this.forceDisconnect(client, "Missing token");
       return;

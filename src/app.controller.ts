@@ -15,7 +15,12 @@ export class AppController {
   }
 
   @Post("validate-participants")
-  validateParticipants(@Body() data: any) {
+  validateParticipants(@Body() data: { participantIds: string }) {
     return this.appService.validateParticipants(data);
+  }
+
+  @Post("quiz-management")
+  quizManagement(@Body() data: { quizId: string, status: boolean }) {
+    return this.appService.sendStatusByQuiz(data);
   }
 }

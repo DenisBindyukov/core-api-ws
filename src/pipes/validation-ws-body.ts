@@ -5,7 +5,6 @@ import { WsException } from '@nestjs/websockets';
 export class WSValidationPipe extends ValidationPipe {
   createExceptionFactory() {
     return (validationErrors = []) => {
-      console.log('this.isDetailedOutputDisabled: ', this.isDetailedOutputDisabled);
       if (this.isDetailedOutputDisabled) {
         return new WsException('Bad request');
       }

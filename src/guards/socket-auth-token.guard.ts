@@ -27,23 +27,4 @@ export class WsAuthGuard implements CanActivate {
 
       return true
     }
-    // try {
-    //   const client: Socket = context.switchToWs().getClient<Socket>();
-    //   const token = client.handshake.headers.token as string;
-    //
-    //   if (!token) {
-    //     throw new WsException('Token is not valid');
-    //   }
-    //
-    //  // const quiz = await this.quizService.getQuizByAuthToken(token);
-    //   const quiz = true
-    //
-    //   if (!quiz) {
-    //     throw new WsException('Unauthorized');
-    //   }
-    //   return true;
-    // } catch (err) {
-    //   throw new WsException(err.message);
-    // }
-
 }
