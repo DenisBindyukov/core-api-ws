@@ -25,20 +25,18 @@ export class SocketParticipantService implements OnGatewayConnection {
   @WebSocketServer()
   server: Server;
 
-  authenticationParticipant(data: { participantIds: string }) {
+  authenticationParticipant(data: { participantId: string }) {
     for (const [client, participantId] of this.clients) {
-      if (participantId === data.participantIds) {
+      if (participantId === data.participantId) {
         client.emit("auth", { isApprove: true });
       }
     }
   }
 
   sendStatusQuiz(data: { quizId: string, status: boolean }) {
-    console.log(data.quizId);
-    const status = !data.status
     this.server.to(`room_${data.quizId}`).emit("quiz-management", {
       type: "QUIZ-STATUS",
-      payload: { status: status }
+      payload: { status: data.status }
     });
   }
 
