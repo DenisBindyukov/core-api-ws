@@ -40,10 +40,7 @@ export class SocketAdminService implements OnGatewayConnection, OnGatewayDisconn
   @UseFilters(new WsExceptionFilter())
   @SubscribeMessage("admin-path")
   handleEvent(@MessageBody() dto: Data, @ConnectedSocket() client: Socket) {
-    console.log("handleEvent: ", dto);
-    const events = "someEvents";
-    // this.server.to("123").emit("test", {});
-    client.emit("test", { events, dto });
+    client.emit("admin-path", { type:'test', dto });
     // return { events, text };
   }
 
@@ -52,7 +49,6 @@ export class SocketAdminService implements OnGatewayConnection, OnGatewayDisconn
     const roomKey = client.handshake.headers.roomkey as string;
 
     if (!token) {
-      console.log(token);
       this.forceDisconnect(client, "Missing token");
       return;
     }
@@ -68,11 +64,11 @@ export class SocketAdminService implements OnGatewayConnection, OnGatewayDisconn
   }
 
   forceDisconnect(client: Socket, message: string) {
-    client.emit("error", new WsException({ type: "error", text: message }));
+    client.emit("unauthorized", new WsException({ type: "error", text: message }));
     client.disconnect(true);
   }
 
   handleDisconnect(client: Socket) {
-    console.log("disconnect");
+
   }
 }

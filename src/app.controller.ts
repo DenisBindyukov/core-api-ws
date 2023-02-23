@@ -15,7 +15,7 @@ export class AppController {
   }
 
   @Post("validate-participants")
-  validateParticipants(@Body() data: { participantIds: string }) {
+  validateParticipants(@Body() data: { participantId: string }) {
     return this.appService.validateParticipants(data);
   }
 

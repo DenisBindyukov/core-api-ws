@@ -14,7 +14,7 @@ export class AppService {
     return "Hello World!";
   }
 
-  validateParticipants(data: {participantIds: string}) {
+  validateParticipants(data: {participantId: string}) {
     this.socketParticipantService.authenticationParticipant(data);
   }
 
